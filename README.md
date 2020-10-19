@@ -3,7 +3,7 @@
 > 腾讯课堂开放平台APIs, SDKs, 以及相关接入文档
 
 ## OpenAPI、SSO整体设计
-<img src="./asset/open_platform_doc/architecture.png" width="50%"  alt="architecture"/>
+<img src="./asset/open_platform_doc/architecture.png" alt="architecture"/>
 
 ## 文档指引
 
