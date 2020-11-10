@@ -64,13 +64,25 @@ public class HttpProfile {
 
     @Override
     public String toString() {
-        return "Request{" +
-                "httpMethod='" + httpMethod + '\'' +
-                ", protocol='" + protocol + '\'' +
-                ", endpoint='" + endpoint + '\'' +
-                ", path='" + path + '\'' +
-                ", queryString='" + queryString + '\'' +
-                ", requestPayload='" + requestPayload + '\'' +
-                '}';
+        return "Request{"
+                + "httpMethod='"
+                + httpMethod
+                + '\''
+                + ", protocol='"
+                + protocol
+                + '\''
+                + ", endpoint='"
+                + endpoint
+                + '\''
+                + ", path='"
+                + path
+                + '\''
+                + ", queryString='"
+                + queryString
+                + '\''
+                + ", requestPayload='"
+                + requestPayload
+                + '\''
+                + '}';
     }
 }

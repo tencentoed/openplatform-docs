@@ -1,6 +1,11 @@
 package com.tencent.common.http;
 
-import com.squareup.okhttp.*;
+import com.squareup.okhttp.Headers;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 import com.tencent.common.exception.BaseException;
 
 import java.io.IOException;
