@@ -13,9 +13,9 @@ import java.util.TimeZone;
 
 public class Client {
 
-    private final static String Service = "edu";
+    private static final String Service = "edu";
 
-    private final static String ApiVersion = "v1.0.0";
+    private static final String ApiVersion = "v1.0.0";
 
     private final Credential credential;
 
@@ -26,6 +26,11 @@ public class Client {
         this.httpProfile = httpProfile;
     }
 
+    /**
+     * 发起调用
+     * @return {@link Response}
+     * @throws BaseException hmac256加密异常
+     */
     public Response doRequest() throws BaseException {
         String httpMethod = httpProfile.getHttpMethod();
         String contentType;
@@ -42,8 +47,8 @@ public class Client {
         String hashedRequestPayload = Sign.sha256Hex(requestPayload);
 
         // 1.canonicalRequest
-        String canonicalRequest = String.format("%s\n%s\n%s\n%s\n%s\n%s",
-                httpMethod, httpProfile.getPath(), canonicalQueryString, canonicalHeaders, signedHeaders, hashedRequestPayload);
+        String canonicalRequest = String.format("%s\n%s\n%s\n%s\n%s\n%s", httpMethod, httpProfile.getPath(),
+                canonicalQueryString, canonicalHeaders, signedHeaders, hashedRequestPayload);
 
         String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -53,7 +58,8 @@ public class Client {
         String hashedCanonicalRequest = Sign.sha256Hex(canonicalRequest.getBytes(StandardCharsets.UTF_8));
 
         // 2.stringToSign
-        String stringToSign = String.format("%s\n%s\n%s\n%s", "KE1-HMAC-SHA256", timestamp, credentialScope, hashedCanonicalRequest);
+        String stringToSign = String.format("%s\n%s\n%s\n%s", "KE1-HMAC-SHA256", timestamp, credentialScope,
+                hashedCanonicalRequest);
 
         byte[] secretDate = Sign.hmac256(("KE1" + credential.getAppSecret()).getBytes(StandardCharsets.UTF_8), date);
         byte[] secretService = Sign.hmac256(secretDate, Service);
@@ -64,7 +70,8 @@ public class Client {
                 DatatypeConverter.printHexBinary(Sign.hmac256(secretSigning, stringToSign)).toLowerCase();
 
         // 4.拼装 authorization
-        String authorization = String.format("KE1-HMAC-SHA256 Credential=%s/%s, SignedHeaders=%s, Signature=%s", credential.getAppId(), credentialScope, signedHeaders, signature);
+        String authorization = String.format("KE1-HMAC-SHA256 Credential=%s/%s, SignedHeaders=%s, Signature=%s",
+                credential.getAppId(), credentialScope, signedHeaders, signature);
 
         String url = httpProfile.getProtocol() + "://" + httpProfile.getEndpoint() + httpProfile.getPath();
         HttpConnection conn = new HttpConnection(60, 0, 0);

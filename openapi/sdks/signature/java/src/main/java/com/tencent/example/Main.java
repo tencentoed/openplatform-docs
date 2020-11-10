@@ -13,6 +13,9 @@ import java.io.IOException;
  */
 public class Main {
 
+    /**
+     * 启动入口
+     */
     public static void main(String[] args) throws BaseException, IOException {
         // 1.实例化一个认证对象
         Credential credential = new Credential("APPID", "APP SECRET");
@@ -23,6 +26,8 @@ public class Main {
         httpProfile.setHttpMethod("GET");
         httpProfile.setPath("/cgi-proxy/open/v1/course/list");
         httpProfile.setQueryString("page=1&size=10&teacher_id=10001");
+        // 对于GET请求，RequestPayload固定为空字符串。
+        // 对于POST请求，RequestPayload为application/json请求体按照key的字典顺序来排序（升序）。
         httpProfile.setRequestPayload("");
 
         // 3.实例化一个client对象
