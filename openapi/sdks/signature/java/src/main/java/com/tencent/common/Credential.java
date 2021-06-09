@@ -29,9 +29,9 @@ public class Credential {
 
   @Override
   public String toString() {
-    return "Credential{" +
-            "appId='" + appId + '\'' +
-            ", appSecret='" + appSecret + '\'' +
-            '}';
+    return "Credential{"
+            + "appId='" + appId + '\''
+            + ", appSecret='" + appSecret + '\''
+            + '}';
   }
 }
