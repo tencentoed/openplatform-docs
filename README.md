@@ -9,5 +9,5 @@
 
 - [腾讯课堂开放平台接入](开放平台接入.md)
 - [OpenAPI 开发指南](openapi/课堂开放平台开发指南.md)
-- [OpenAPI SDK 参考](openapi/sdk)
+- [OpenAPI SDK 参考](openapi/sdks/signature)
 - [第三方企业/机构接入千帆玉符参考](https://docs.qq.com/doc/DSENHR29pQm1EZkt3)
