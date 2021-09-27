@@ -1,0 +1,6 @@
+*.pyc
+build/
+dist/
+tencentcloud_sdk_python.egg-info/
+.python-version
+.tox/
