@@ -73,6 +73,10 @@ type AgencyCourseInfo struct {
 	// 课程收费类型1：免费 2：付费
 	// 注意：此字段可能返回 null，表示取不到有效值。
 	CoursePayType *uint64 `json:"CoursePayType,omitempty" name:"CoursePayType"`
+
+	// 收藏时间
+	// 注意：此字段可能返回 null，表示取不到有效值。
+	FavTime *uint64 `json:"FavTime,omitempty" name:"FavTime"`
 }
 
 type AnswerInfo struct {
@@ -3546,7 +3550,7 @@ type ModifyUserFavRequest struct {
 	FavType *uint64 `json:"FavType,omitempty" name:"FavType"`
 
 	// 收藏ID
-	FavId *uint64 `json:"FavId,omitempty" name:"FavId"`
+	FavIds []*uint64 `json:"FavIds,omitempty" name:"FavIds"`
 
 	// 收藏动作0 取消收藏 1 收藏
 	FavAction *uint64 `json:"FavAction,omitempty" name:"FavAction"`
@@ -3567,7 +3571,7 @@ func (r *ModifyUserFavRequest) FromJsonString(s string) error {
 	delete(f, "IdaasOrgId")
 	delete(f, "ThirdUid")
 	delete(f, "FavType")
-	delete(f, "FavId")
+	delete(f, "FavIds")
 	delete(f, "FavAction")
 	if len(f) > 0 {
 		return tcerr.NewTencentCloudSDKError("ClientError.BuildRequestError", "ModifyUserFavRequest has unknown keys!", "")
