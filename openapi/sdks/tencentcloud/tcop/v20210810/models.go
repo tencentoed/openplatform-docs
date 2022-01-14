@@ -77,14 +77,6 @@ type AgencyCourseInfo struct {
 	// 收藏时间
 	// 注意：此字段可能返回 null，表示取不到有效值。
 	FavTime *uint64 `json:"FavTime,omitempty" name:"FavTime"`
-
-	// 订单详情页url
-	// 注意：此字段可能返回 null，表示取不到有效值。
-	OrderDetailUrl *string `json:"OrderDetailUrl,omitempty" name:"OrderDetailUrl"`
-
-	// 支付页面url
-	// 注意：此字段可能返回 null，表示取不到有效值。
-	PayUrl *string `json:"PayUrl,omitempty" name:"PayUrl"`
 }
 
 type AnswerInfo struct {
@@ -239,6 +231,12 @@ type ChannelUserOrder struct {
 
 	// 机构id
 	AgencyId *int64 `json:"AgencyId,omitempty" name:"AgencyId"`
+
+	// 订单详情页url
+	OrderDetailUrl *string `json:"OrderDetailUrl,omitempty" name:"OrderDetailUrl"`
+
+	// 支付页面url
+	PayUrl *string `json:"PayUrl,omitempty" name:"PayUrl"`
 }
 
 type ChannelUserOrderDetail struct {
