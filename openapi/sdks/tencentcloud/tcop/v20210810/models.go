@@ -77,6 +77,14 @@ type AgencyCourseInfo struct {
 	// 收藏时间
 	// 注意：此字段可能返回 null，表示取不到有效值。
 	FavTime *uint64 `json:"FavTime,omitempty" name:"FavTime"`
+
+	// 订单详情页url
+	// 注意：此字段可能返回 null，表示取不到有效值。
+	OrderDetailUrl *string `json:"OrderDetailUrl,omitempty" name:"OrderDetailUrl"`
+
+	// 支付页面url
+	// 注意：此字段可能返回 null，表示取不到有效值。
+	PayUrl *string `json:"PayUrl,omitempty" name:"PayUrl"`
 }
 
 type AnswerInfo struct {
@@ -2009,6 +2017,9 @@ type DescribeChannelUserOrdersRequest struct {
 
 	// 订单类型 1是免费订单2是付费订单
 	CoursePayId *uint64 `json:"CoursePayId,omitempty" name:"CoursePayId"`
+
+	// 用户选择的标签页 0全部 1待付款 2退款中 3待评价 4重学/赠送
+	OrderState *uint64 `json:"OrderState,omitempty" name:"OrderState"`
 }
 
 func (r *DescribeChannelUserOrdersRequest) ToJsonString() string {
@@ -2028,6 +2039,7 @@ func (r *DescribeChannelUserOrdersRequest) FromJsonString(s string) error {
 	delete(f, "PageIndex")
 	delete(f, "PageSize")
 	delete(f, "CoursePayId")
+	delete(f, "OrderState")
 	if len(f) > 0 {
 		return tcerr.NewTencentCloudSDKError("ClientError.BuildRequestError", "DescribeChannelUserOrdersRequest has unknown keys!", "")
 	}
