@@ -307,7 +307,7 @@ type ChannelUserOrderDetail struct {
 
 	// 订单id
 	// 注意：此字段可能返回 null，表示取不到有效值。
-	OrderId *int64 `json:"OrderId,omitempty" name:"OrderId"`
+	OrderId *string `json:"OrderId,omitempty" name:"OrderId"`
 
 	// 支付时间
 	// 注意：此字段可能返回 null，表示取不到有效值。
@@ -779,7 +779,7 @@ type DeleteChannelUserOrderRequest struct {
 	ThirdUid *string `json:"ThirdUid,omitempty" name:"ThirdUid"`
 
 	// 订单id，仅付费订单用
-	OrderId *int64 `json:"OrderId,omitempty" name:"OrderId"`
+	OrderId *string `json:"OrderId,omitempty" name:"OrderId"`
 
 	// 机构id 必传
 	AgencyId *int64 `json:"AgencyId,omitempty" name:"AgencyId"`
@@ -1938,7 +1938,7 @@ type DescribeChannelUserOrderInfoRequest struct {
 	ThirdUid *string `json:"ThirdUid,omitempty" name:"ThirdUid"`
 
 	// 订单号
-	OrderId *uint64 `json:"OrderId,omitempty" name:"OrderId"`
+	OrderId *string `json:"OrderId,omitempty" name:"OrderId"`
 
 	// 机构id 必传
 	AgencyId *uint64 `json:"AgencyId,omitempty" name:"AgencyId"`
