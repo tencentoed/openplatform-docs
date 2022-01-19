@@ -1837,6 +1837,37 @@ func (c *Client) ModifyUserFav(request *ModifyUserFavRequest) (response *ModifyU
 	return
 }
 
+func NewModifyUserFavBatchRequest() (request *ModifyUserFavBatchRequest) {
+	request = &ModifyUserFavBatchRequest{
+		BaseRequest: &tchttp.BaseRequest{},
+	}
+	request.Init().WithApiInfo("tcop", APIVersion, "ModifyUserFavBatch")
+
+	return
+}
+
+func NewModifyUserFavBatchResponse() (response *ModifyUserFavBatchResponse) {
+	response = &ModifyUserFavBatchResponse{
+		BaseResponse: &tchttp.BaseResponse{},
+	}
+	return
+}
+
+// ModifyUserFavBatch
+// 批量操作用户收藏
+//
+// 可能返回的错误码:
+//  AUTHFAILURE = "AuthFailure"
+//  AUTHFAILURE_NOTEQUALSCOURSEAPPID = "AuthFailure.NotEqualsCourseAppid"
+func (c *Client) ModifyUserFavBatch(request *ModifyUserFavBatchRequest) (response *ModifyUserFavBatchResponse, err error) {
+	if request == nil {
+		request = NewModifyUserFavBatchRequest()
+	}
+	response = NewModifyUserFavBatchResponse()
+	err = c.Send(request, response)
+	return
+}
+
 func NewSearchDeptRequest() (request *SearchDeptRequest) {
 	request = &SearchDeptRequest{
 		BaseRequest: &tchttp.BaseRequest{},

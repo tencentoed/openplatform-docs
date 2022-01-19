@@ -3219,6 +3219,10 @@ type DescribeUserFavsResponse struct {
 		// 注意：此字段可能返回 null，表示取不到有效值。
 		AgencyCourseInfos []*AgencyCourseInfo `json:"AgencyCourseInfos,omitempty" name:"AgencyCourseInfos"`
 
+		// 总数
+		// 注意：此字段可能返回 null，表示取不到有效值。
+		TotalCount *uint64 `json:"TotalCount,omitempty" name:"TotalCount"`
+
 		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
 		RequestId *string `json:"RequestId,omitempty" name:"RequestId"`
 	} `json:"Response"`
@@ -3547,7 +3551,7 @@ func (r *ModifyTeacherResponse) FromJsonString(s string) error {
 	return json.Unmarshal([]byte(s), &r)
 }
 
-type ModifyUserFavRequest struct {
+type ModifyUserFavBatchRequest struct {
 	*tchttp.BaseRequest
 
 	// 千帆租户ID
@@ -3561,6 +3565,74 @@ type ModifyUserFavRequest struct {
 
 	// 收藏ID
 	FavIds []*uint64 `json:"FavIds,omitempty" name:"FavIds"`
+
+	// 收藏动作0 取消收藏 1 收藏
+	FavAction *uint64 `json:"FavAction,omitempty" name:"FavAction"`
+}
+
+func (r *ModifyUserFavBatchRequest) ToJsonString() string {
+	b, _ := json.Marshal(r)
+	return string(b)
+}
+
+// FromJsonString It is highly **NOT** recommended to use this function
+// because it has no param check, nor strict type check
+func (r *ModifyUserFavBatchRequest) FromJsonString(s string) error {
+	f := make(map[string]interface{})
+	if err := json.Unmarshal([]byte(s), &f); err != nil {
+		return err
+	}
+	delete(f, "IdaasOrgId")
+	delete(f, "ThirdUid")
+	delete(f, "FavType")
+	delete(f, "FavIds")
+	delete(f, "FavAction")
+	if len(f) > 0 {
+		return tcerr.NewTencentCloudSDKError("ClientError.BuildRequestError", "ModifyUserFavBatchRequest has unknown keys!", "")
+	}
+	return json.Unmarshal([]byte(s), &r)
+}
+
+type ModifyUserFavBatchResponse struct {
+	*tchttp.BaseResponse
+	Response *struct {
+
+		// 操作成功的收藏id
+		SuccessIds []*uint64 `json:"SuccessIds,omitempty" name:"SuccessIds"`
+
+		// 操作失败的收藏id
+		FailIds []*uint64 `json:"FailIds,omitempty" name:"FailIds"`
+
+		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+		RequestId *string `json:"RequestId,omitempty" name:"RequestId"`
+	} `json:"Response"`
+}
+
+func (r *ModifyUserFavBatchResponse) ToJsonString() string {
+	b, _ := json.Marshal(r)
+	return string(b)
+}
+
+// FromJsonString It is highly **NOT** recommended to use this function
+// because it has no param check, nor strict type check
+func (r *ModifyUserFavBatchResponse) FromJsonString(s string) error {
+	return json.Unmarshal([]byte(s), &r)
+}
+
+type ModifyUserFavRequest struct {
+	*tchttp.BaseRequest
+
+	// 千帆租户ID
+	IdaasOrgId *string `json:"IdaasOrgId,omitempty" name:"IdaasOrgId"`
+
+	// 三方平台id这里默认新闻渠道下新闻用户id
+	ThirdUid *string `json:"ThirdUid,omitempty" name:"ThirdUid"`
+
+	// 收藏类型 0:收藏课程 2:收藏课程包
+	FavType *uint64 `json:"FavType,omitempty" name:"FavType"`
+
+	// 收藏ID
+	FavIds *uint64 `json:"FavIds,omitempty" name:"FavIds"`
 
 	// 收藏动作0 取消收藏 1 收藏
 	FavAction *uint64 `json:"FavAction,omitempty" name:"FavAction"`
