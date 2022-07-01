@@ -26,6 +26,18 @@ const (
 	// 操作失败。
 	FAILEDOPERATION = "FailedOperation"
 
+	// cdkey已经使用。
+	FAILEDOPERATION_CDKEYALREADYUSED = "FailedOperation.CdKeyAlreadyUsed"
+
+	// cdkey兑换失败。
+	FAILEDOPERATION_CDKEYCHANGEFAILED = "FailedOperation.CdKeyChangeFailed"
+
+	// cdkey过期无效。
+	FAILEDOPERATION_CDKEYEXPIREDINVALID = "FailedOperation.CdKeyExpiredInvalid"
+
+	// cdkey不存在。
+	FAILEDOPERATION_CDKEYNOTFOUND = "FailedOperation.CdKeyNotFound"
+
 	// 课程参数错误。
 	FAILEDOPERATION_CLICKEXPCOURSENOTICEPARAMERR = "FailedOperation.ClickExpCourseNoticeParamErr"
 
@@ -161,6 +173,9 @@ const (
 	// 课程不存在。
 	FAILEDOPERATION_LOGICTERMNOTEXIST = "FailedOperation.LogicTermNotExist"
 
+	// 未找到三方平台用户。
+	FAILEDOPERATION_LOGICTHIRDUSERNOTFOUND = "FailedOperation.LogicThirdUserNotFound"
+
 	// 非手机注册用户。
 	FAILEDOPERATION_LOGICUIDTYPEINVALID = "FailedOperation.LogicUidTypeInvalid"
 
@@ -193,6 +208,9 @@ const (
 
 	// 通讯录初始化失败。
 	FAILEDOPERATION_NEWIDAASFAIL = "FailedOperation.NewIDaaSFail"
+
+	// 订单不允许删除。
+	FAILEDOPERATION_ORDERNOTALLOWTODEL = "FailedOperation.OrderNotAllowToDel"
 
 	// 未查询到该数据。
 	FAILEDOPERATION_QUERYNOTFOUNDERROR = "FailedOperation.QueryNotFoundError"
@@ -256,6 +274,9 @@ const (
 
 	// 开放平台用户注册失败。
 	UNAUTHORIZEDOPERATION_ACCOUNTCREATEERROR = "UnauthorizedOperation.AccountCreateError"
+
+	// appid和机构不匹配。
+	UNAUTHORIZEDOPERATION_APPIDNOTMATCHCORPID = "UnauthorizedOperation.AppIdNotMatchCorpid"
 
 	// 操作不支持。
 	UNSUPPORTEDOPERATION = "UnsupportedOperation"
