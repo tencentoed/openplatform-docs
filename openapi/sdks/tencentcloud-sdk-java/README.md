@@ -15,7 +15,7 @@
 
 ## 通过源码包安装
 
-1. 前往 [Github 仓库](https://github.com/tencentoed/openplatform-docs/openapi/sdks/tencentcloud-sdk-java) 下载源码压缩包；
+1. 前往 [Github 仓库](https://github.com/tencentoed/openplatform-docs/tree/main/openapi/sdks/tencentcloud-sdk-java) 下载源码压缩包；
 2. 解压源码包到您项目合适的位置；
 3. 引用方法可参考示例。
 
