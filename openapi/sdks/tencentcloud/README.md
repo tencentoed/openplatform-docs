@@ -77,13 +77,13 @@ func main() {
 	
 	// 5.通过client对象调用想要访问的接口，需要传入请求对象
 	response, err := client.DescribeCourseList(req)
-	if err != nil {
-		panic(err)
-	}
 	if _, ok := err.(*errors.TencentCloudSDKError); ok {
 		fmt.Printf("An API error has returned: %s", err)
 		return
 	}
+    if err != nil {
+        panic(err)
+    }
 	// 打印返回的json字符串
 	fmt.Printf("%s\n", response.ToJsonString())
 }
