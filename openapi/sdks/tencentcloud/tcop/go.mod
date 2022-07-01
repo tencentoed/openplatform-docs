@@ -1,4 +1,4 @@
-module github.com/tencentoed/tencentcloud-sdk-go/tencentcloud/tcop
+module github.com/tencentoed/openplatform-docs/openapi/sdks/tencentcloud/tcop
 
 go 1.14
 
