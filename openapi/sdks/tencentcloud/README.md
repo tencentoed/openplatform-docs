@@ -32,9 +32,9 @@ go get -v -u github.com/tencentoed/openplatform-docs/openapi/sdks/tencentcloud/t
 
 # 快速开始
 
-每个接口都有一个对应的 Request 结构和一个 Response 结构。例如云服务器的查询实例列表接口 DescribeInstances 有对应的请求结构体 DescribeInstancesRequest 和返回结构体 DescribeInstancesResponse 。
+每个接口都有一个对应的 Request 结构和一个 Response 结构。例如渠道物料-课程列表接口 DescribeCourseList 有对应的请求结构体 DescribeCourseListRequest 和返回结构体 DescribeCourseListResponse 。
 
-下面以云服务器查询实例列表接口为例，介绍 SDK 的基础用法。
+下面以渠道物料-课程列表接口为例，介绍 SDK 的基础用法。
 
 ```go
 package main
@@ -51,41 +51,41 @@ import (
 )
 
 func main() {
-	// 1.实例化一个认证对象，入参需要传入腾讯云账户密钥对secretId，secretKey。
-	credential := common.NewCredential("xxxxx", "xxxxx")
-	
-	// 2.实例化一个客户端配置对象，可以指定超时时间等配置
-    cpf := profile.NewClientProfile()
-	cpf.HttpProfile.ReqMethod = "POST"
-	cpf.HttpProfile.ReqTimeout = 30
-	cpf.HttpProfile.Endpoint = "tcop.tencentcloudapi.com"
-	cpf.SignMethod = "TC3-HMAC-SHA256"
-	cpf.Language = "en-US"
+   // 1.实例化一个认证对象，入参需要传入腾讯云账户密钥对secretId，secretKey。
+   credential := common.NewCredential("xxx", "xxx")
 
-    // 3.实例化要请求产品(以tcop为例)的client对象
-    client, _ := tcop.NewClient(credential, regions.Guangzhou, cpf)
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client.WithHttpTransport(tr)
+   // 2.实例化一个客户端配置对象，可以指定超时时间等配置
+   cpf := profile.NewClientProfile()
+   cpf.HttpProfile.ReqMethod = "POST"
+   cpf.HttpProfile.ReqTimeout = 30
+   cpf.HttpProfile.Endpoint = "tcop.tencentcloudapi.com"
+   cpf.SignMethod = "TC3-HMAC-SHA256"
+   cpf.Language = "en-US"
 
-	// 4.实例化一个请求对象
-	req := tcop.NewDescribeCourseListRequest()
-	req.CourseType = common.Int64Ptr(1)
-	req.Page = common.Int64Ptr(1)
-	req.PageSize = common.Int64Ptr(1)
-	
-	// 5.通过client对象调用想要访问的接口，需要传入请求对象
-	response, err := client.DescribeCourseList(req)
-	if _, ok := err.(*errors.TencentCloudSDKError); ok {
-		fmt.Printf("An API error has returned: %s", err)
-		return
-	}
-    if err != nil {
-        panic(err)
-    }
-	// 打印返回的json字符串
-	fmt.Printf("%s\n", response.ToJsonString())
+   // 3.实例化要请求产品(以tcop为例)的client对象
+   client, _ := tcop.NewClient(credential, regions.Guangzhou, cpf)
+   tr := &http.Transport{
+      TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+   }
+   client.WithHttpTransport(tr)
+
+   // 4.实例化一个请求对象
+   req := tcop.NewDescribeCourseListRequest()
+   req.CourseType = common.Int64Ptr(1)
+   req.Page = common.Int64Ptr(1)
+   req.PageSize = common.Int64Ptr(1)
+
+   // 5.通过client对象调用想要访问的接口，需要传入请求对象
+   response, err := client.DescribeCourseList(req)
+   if _, ok := err.(*errors.TencentCloudSDKError); ok {
+      fmt.Printf("An API error has returned: %s", err)
+      return
+   }
+   if err != nil {
+      panic(err)
+   }
+   // 打印返回的json字符串
+   fmt.Printf("%s\n", response.ToJsonString())
 }
 ```
 
