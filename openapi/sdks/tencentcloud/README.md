@@ -13,7 +13,7 @@
 ## 通过go get安装
 
 ```bash
-go get -v -u github.com/tencentoed/tencentcloud-sdk-go/tencentcloud/tcop
+go get -v -u github.com/tencentoed/openplatform-docs/openapi/sdks/tencentcloud/tcop
 ```
 
 推荐使用腾讯云镜像加速下载：
@@ -46,7 +46,7 @@ import (
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/errors"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/regions"
-	tcop "github.com/tencentoed/tencentcloud-sdk-go/tencentcloud/tcop/v20210810"
+	tcop "github.com/tencentoed/openplatform-docs/openapi/sdks/tencentcloud/tcop/v20210810"
 	"net/http"
 )
 
