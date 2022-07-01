@@ -15,9 +15,9 @@
 package v20210810
 
 import (
-	"encoding/json"
-	tcerr "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/errors"
-	tchttp "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/http"
+    "encoding/json"
+    tcerr "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/errors"
+    tchttp "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/http"
 )
 
 type AgencyCourseInfo struct {
@@ -114,8 +114,8 @@ type AuthorizeFastLiveCourseRequest struct {
 }
 
 func (r *AuthorizeFastLiveCourseRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -145,14 +145,26 @@ type AuthorizeFastLiveCourseResponse struct {
 }
 
 func (r *AuthorizeFastLiveCourseResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
 // because it has no param check, nor strict type check
 func (r *AuthorizeFastLiveCourseResponse) FromJsonString(s string) error {
 	return json.Unmarshal([]byte(s), &r)
+}
+
+type BasicCourse struct {
+
+	// 课程ID
+	CourseId *int64 `json:"CourseId,omitempty" name:"CourseId"`
+
+	// 课程ID类型：1-课程ID 2-课程包ID
+	CourseIdType *int64 `json:"CourseIdType,omitempty" name:"CourseIdType"`
+
+	// 课程名称
+	CourseName *string `json:"CourseName,omitempty" name:"CourseName"`
 }
 
 type BatchCourseInfo struct {
@@ -489,6 +501,30 @@ type CourseBasicInfo struct {
 	ApplyNum *int64 `json:"ApplyNum,omitempty" name:"ApplyNum"`
 }
 
+type CourseDetail struct {
+
+	// 课程ID
+	CourseId *int64 `json:"CourseId,omitempty" name:"CourseId"`
+
+	// 课程名称
+	Name *string `json:"Name,omitempty" name:"Name"`
+
+	// 课程封面图
+	CoverUrl *string `json:"CoverUrl,omitempty" name:"CoverUrl"`
+
+	// 课程班级列表
+	TermList []*CourseTerm `json:"TermList,omitempty" name:"TermList"`
+
+	// 课程价格，单位：分
+	Price *int64 `json:"Price,omitempty" name:"Price"`
+
+	// 课程多图详情
+	PictureList []*string `json:"PictureList,omitempty" name:"PictureList"`
+
+	// 机构名称
+	AgencyName *string `json:"AgencyName,omitempty" name:"AgencyName"`
+}
+
 type CourseInfo struct {
 
 	// 课程id
@@ -637,6 +673,110 @@ type CoursePackageInfo struct {
 	TermList []*PackageTerm `json:"TermList,omitempty" name:"TermList"`
 }
 
+type CoursePkgInfo struct {
+
+	// 系列课ID
+	CoursePkgId *int64 `json:"CoursePkgId,omitempty" name:"CoursePkgId"`
+
+	// 系列课名称
+	Name *string `json:"Name,omitempty" name:"Name"`
+
+	// 系列课封面
+	CoverUrl *string `json:"CoverUrl,omitempty" name:"CoverUrl"`
+
+	// 系列课简介
+	Summary *string `json:"Summary,omitempty" name:"Summary"`
+
+	// 课程列表
+	CourseList []*PkgCourse `json:"CourseList,omitempty" name:"CourseList"`
+
+	// 课程包价格，单位：分
+	Price *int64 `json:"Price,omitempty" name:"Price"`
+
+	// 系列课多图详情
+	PictureList []*string `json:"PictureList,omitempty" name:"PictureList"`
+
+	// 机构名称
+	AgencyName *string `json:"AgencyName,omitempty" name:"AgencyName"`
+}
+
+type CourseTask struct {
+
+	// 任务名称
+	Name *string `json:"Name,omitempty" name:"Name"`
+
+	// 任务类型：1-直播 2-录播 3-资料 4-习题/考试
+	Type *int64 `json:"Type,omitempty" name:"Type"`
+
+	// 任务扩展
+	Ext *TaskExt `json:"Ext,omitempty" name:"Ext"`
+
+	// 任务ID
+	Id *int64 `json:"Id,omitempty" name:"Id"`
+}
+
+type CourseTerm struct {
+
+	// 班级ID
+	TermId *int64 `json:"TermId,omitempty" name:"TermId"`
+
+	// 班级名称
+	Name *string `json:"Name,omitempty" name:"Name"`
+
+	// 节列表
+	SubCourseList []*SubCourse `json:"SubCourseList,omitempty" name:"SubCourseList"`
+}
+
+type CreateCdKeyUserExchangeRequest struct {
+	*tchttp.BaseRequest
+
+	// 第三方平台用户ID
+	ThirdUid *string `json:"ThirdUid,omitempty" name:"ThirdUid"`
+
+	// 兑换码
+	CdKey *string `json:"CdKey,omitempty" name:"CdKey"`
+}
+
+func (r *CreateCdKeyUserExchangeRequest) ToJsonString() string {
+    b, _ := json.Marshal(r)
+    return string(b)
+}
+
+// FromJsonString It is highly **NOT** recommended to use this function
+// because it has no param check, nor strict type check
+func (r *CreateCdKeyUserExchangeRequest) FromJsonString(s string) error {
+	f := make(map[string]interface{})
+	if err := json.Unmarshal([]byte(s), &f); err != nil {
+		return err
+	}
+	delete(f, "ThirdUid")
+	delete(f, "CdKey")
+	if len(f) > 0 {
+		return tcerr.NewTencentCloudSDKError("ClientError.BuildRequestError", "CreateCdKeyUserExchangeRequest has unknown keys!", "")
+	}
+	return json.Unmarshal([]byte(s), &r)
+}
+
+type CreateCdKeyUserExchangeResponse struct {
+	*tchttp.BaseResponse
+	Response *struct {
+
+		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+		RequestId *string `json:"RequestId,omitempty" name:"RequestId"`
+	} `json:"Response"`
+}
+
+func (r *CreateCdKeyUserExchangeResponse) ToJsonString() string {
+    b, _ := json.Marshal(r)
+    return string(b)
+}
+
+// FromJsonString It is highly **NOT** recommended to use this function
+// because it has no param check, nor strict type check
+func (r *CreateCdKeyUserExchangeResponse) FromJsonString(s string) error {
+	return json.Unmarshal([]byte(s), &r)
+}
+
 type CreateFastLiveCourseRequest struct {
 	*tchttp.BaseRequest
 
@@ -654,8 +794,8 @@ type CreateFastLiveCourseRequest struct {
 }
 
 func (r *CreateFastLiveCourseRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -680,11 +820,11 @@ type CreateFastLiveCourseResponse struct {
 	Response *struct {
 
 		// 直播间id
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		TermId *string `json:"TermId,omitempty" name:"TermId"`
 
 		// 直播链接
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		LiveUrl *string `json:"LiveUrl,omitempty" name:"LiveUrl"`
 
 		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -693,8 +833,8 @@ type CreateFastLiveCourseResponse struct {
 }
 
 func (r *CreateFastLiveCourseResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -720,8 +860,8 @@ type CreateLiveCourseRequest struct {
 }
 
 func (r *CreateLiveCourseRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -746,11 +886,11 @@ type CreateLiveCourseResponse struct {
 	Response *struct {
 
 		// 直播间id
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		TermId *uint64 `json:"TermId,omitempty" name:"TermId"`
 
 		// 直播链接
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		LiveUrl *string `json:"LiveUrl,omitempty" name:"LiveUrl"`
 
 		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -759,8 +899,8 @@ type CreateLiveCourseResponse struct {
 }
 
 func (r *CreateLiveCourseResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -789,8 +929,8 @@ type DeleteChannelUserOrderRequest struct {
 }
 
 func (r *DeleteChannelUserOrderRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -821,8 +961,8 @@ type DeleteChannelUserOrderResponse struct {
 }
 
 func (r *DeleteChannelUserOrderResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -845,8 +985,8 @@ type DeleteCourseRequest struct {
 }
 
 func (r *DeleteCourseRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -875,8 +1015,8 @@ type DeleteCourseResponse struct {
 }
 
 func (r *DeleteCourseResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -899,8 +1039,8 @@ type DeleteFastCourseTaskRequest struct {
 }
 
 func (r *DeleteFastCourseTaskRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -929,8 +1069,8 @@ type DeleteFastCourseTaskResponse struct {
 }
 
 func (r *DeleteFastCourseTaskResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1004,8 +1144,8 @@ type DescribeAgencyCouponsRequest struct {
 }
 
 func (r *DescribeAgencyCouponsRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1041,8 +1181,8 @@ type DescribeAgencyCouponsResponse struct {
 }
 
 func (r *DescribeAgencyCouponsResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1068,8 +1208,8 @@ type DescribeAgencyCourseInfosRequest struct {
 }
 
 func (r *DescribeAgencyCourseInfosRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1105,8 +1245,8 @@ type DescribeAgencyCourseInfosResponse struct {
 }
 
 func (r *DescribeAgencyCourseInfosResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1129,8 +1269,8 @@ type DescribeAgencyCoursePkgRequest struct {
 }
 
 func (r *DescribeAgencyCoursePkgRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1162,8 +1302,8 @@ type DescribeAgencyCoursePkgResponse struct {
 }
 
 func (r *DescribeAgencyCoursePkgResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1186,8 +1326,8 @@ type DescribeAgencyCourseRequest struct {
 }
 
 func (r *DescribeAgencyCourseRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1211,31 +1351,31 @@ type DescribeAgencyCourseResponse struct {
 	Response *struct {
 
 		// 课程id
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		CourseId *int64 `json:"CourseId,omitempty" name:"CourseId"`
 
 		// 课程名
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		CourseName *string `json:"CourseName,omitempty" name:"CourseName"`
 
 		// 课程封面
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		CoverUrl *string `json:"CoverUrl,omitempty" name:"CoverUrl"`
 
 		// 课程价格
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		Price *int64 `json:"Price,omitempty" name:"Price"`
 
 		// 课程url
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		CourseUrl *string `json:"CourseUrl,omitempty" name:"CourseUrl"`
 
 		// 班级列表
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		TermList []*SCRMTermInfo `json:"TermList,omitempty" name:"TermList"`
 
 		// 课程报名人数
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		ApplyNum *int64 `json:"ApplyNum,omitempty" name:"ApplyNum"`
 
 		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -1244,8 +1384,8 @@ type DescribeAgencyCourseResponse struct {
 }
 
 func (r *DescribeAgencyCourseResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1268,8 +1408,8 @@ type DescribeAgencyCoursesRequest struct {
 }
 
 func (r *DescribeAgencyCoursesRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1301,8 +1441,8 @@ type DescribeAgencyCoursesResponse struct {
 }
 
 func (r *DescribeAgencyCoursesResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1334,8 +1474,8 @@ type DescribeAgencyPrivateCouponsRequest struct {
 }
 
 func (r *DescribeAgencyPrivateCouponsRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1373,8 +1513,8 @@ type DescribeAgencyPrivateCouponsResponse struct {
 }
 
 func (r *DescribeAgencyPrivateCouponsResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1397,8 +1537,8 @@ type DescribeAgencyTermsRequest struct {
 }
 
 func (r *DescribeAgencyTermsRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1422,7 +1562,7 @@ type DescribeAgencyTermsResponse struct {
 	Response *struct {
 
 		// 班级列表
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		TermList []*SCRMTermInfo `json:"TermList,omitempty" name:"TermList"`
 
 		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -1431,8 +1571,8 @@ type DescribeAgencyTermsResponse struct {
 }
 
 func (r *DescribeAgencyTermsResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1461,8 +1601,8 @@ type DescribeAgencyUserApplyCoursesRequest struct {
 }
 
 func (r *DescribeAgencyUserApplyCoursesRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1488,11 +1628,11 @@ type DescribeAgencyUserApplyCoursesResponse struct {
 	Response *struct {
 
 		// 学习列表
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		UserApplyList []*UserApply `json:"UserApplyList,omitempty" name:"UserApplyList"`
 
 		// 下一页序号
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		PageNext *int64 `json:"PageNext,omitempty" name:"PageNext"`
 
 		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -1501,8 +1641,8 @@ type DescribeAgencyUserApplyCoursesResponse struct {
 }
 
 func (r *DescribeAgencyUserApplyCoursesResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1525,8 +1665,8 @@ type DescribeAgencyUserAttendanceRequest struct {
 }
 
 func (r *DescribeAgencyUserAttendanceRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1567,8 +1707,8 @@ type DescribeAgencyUserAttendanceResponse struct {
 }
 
 func (r *DescribeAgencyUserAttendanceResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1597,8 +1737,8 @@ type DescribeAgencyUserOrdersRequest struct {
 }
 
 func (r *DescribeAgencyUserOrdersRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1635,8 +1775,8 @@ type DescribeAgencyUserOrdersResponse struct {
 }
 
 func (r *DescribeAgencyUserOrdersResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1665,8 +1805,8 @@ type DescribeAgencyUserStudyProgressesRequest struct {
 }
 
 func (r *DescribeAgencyUserStudyProgressesRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1692,11 +1832,11 @@ type DescribeAgencyUserStudyProgressesResponse struct {
 	Response *struct {
 
 		// 下一页序号
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		PageNext *int64 `json:"PageNext,omitempty" name:"PageNext"`
 
 		// 学习列表
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		StudyList []*StudyInfo `json:"StudyList,omitempty" name:"StudyList"`
 
 		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -1705,8 +1845,8 @@ type DescribeAgencyUserStudyProgressesResponse struct {
 }
 
 func (r *DescribeAgencyUserStudyProgressesResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1729,8 +1869,8 @@ type DescribeAgencyUsersRequest struct {
 }
 
 func (r *DescribeAgencyUsersRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1762,8 +1902,8 @@ type DescribeAgencyUsersResponse struct {
 }
 
 func (r *DescribeAgencyUsersResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1780,8 +1920,8 @@ type DescribeChannelClassInfosRequest struct {
 }
 
 func (r *DescribeChannelClassInfosRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1803,7 +1943,7 @@ type DescribeChannelClassInfosResponse struct {
 	Response *struct {
 
 		// 批量term的上下课信息
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		ClassInfos []*ClassInfo `json:"ClassInfos,omitempty" name:"ClassInfos"`
 
 		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -1812,8 +1952,8 @@ type DescribeChannelClassInfosResponse struct {
 }
 
 func (r *DescribeChannelClassInfosResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1833,8 +1973,8 @@ type DescribeChannelCourseIdsRequest struct {
 }
 
 func (r *DescribeChannelCourseIdsRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1868,8 +2008,8 @@ type DescribeChannelCourseIdsResponse struct {
 }
 
 func (r *DescribeChannelCourseIdsResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1886,8 +2026,8 @@ type DescribeChannelPoolCoursesRequest struct {
 }
 
 func (r *DescribeChannelPoolCoursesRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1909,7 +2049,7 @@ type DescribeChannelPoolCoursesResponse struct {
 	Response *struct {
 
 		// 课程详情列表
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		CourseList []*CourseInfo `json:"CourseList,omitempty" name:"CourseList"`
 
 		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -1918,8 +2058,8 @@ type DescribeChannelPoolCoursesResponse struct {
 }
 
 func (r *DescribeChannelPoolCoursesResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1945,14 +2085,11 @@ type DescribeChannelUserOrderInfoRequest struct {
 
 	// 课程id 免费订单用
 	TermId *uint64 `json:"TermId,omitempty" name:"TermId"`
-
-	// 订单类型 1是免费订单2是付费订单
-	CoursePayId *uint64 `json:"CoursePayId,omitempty" name:"CoursePayId"`
 }
 
 func (r *DescribeChannelUserOrderInfoRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -1967,7 +2104,6 @@ func (r *DescribeChannelUserOrderInfoRequest) FromJsonString(s string) error {
 	delete(f, "OrderId")
 	delete(f, "AgencyId")
 	delete(f, "TermId")
-	delete(f, "CoursePayId")
 	if len(f) > 0 {
 		return tcerr.NewTencentCloudSDKError("ClientError.BuildRequestError", "DescribeChannelUserOrderInfoRequest has unknown keys!", "")
 	}
@@ -1979,7 +2115,7 @@ type DescribeChannelUserOrderInfoResponse struct {
 	Response *struct {
 
 		// 订单详情结构体
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		Order *ChannelUserOrderDetail `json:"Order,omitempty" name:"Order"`
 
 		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -1988,8 +2124,8 @@ type DescribeChannelUserOrderInfoResponse struct {
 }
 
 func (r *DescribeChannelUserOrderInfoResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2021,8 +2157,8 @@ type DescribeChannelUserOrdersRequest struct {
 }
 
 func (r *DescribeChannelUserOrdersRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2049,15 +2185,15 @@ type DescribeChannelUserOrdersResponse struct {
 	Response *struct {
 
 		// 下一页序号，当为0时表示没有下一页了
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		PageNext *int64 `json:"PageNext,omitempty" name:"PageNext"`
 
 		// 订单列表
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		OrderList []*ChannelUserOrder `json:"OrderList,omitempty" name:"OrderList"`
 
 		// 订单总数
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		Total *int64 `json:"Total,omitempty" name:"Total"`
 
 		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -2066,8 +2202,8 @@ type DescribeChannelUserOrdersResponse struct {
 }
 
 func (r *DescribeChannelUserOrdersResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2093,8 +2229,8 @@ type DescribeChatRequest struct {
 }
 
 func (r *DescribeChatRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2133,13 +2269,171 @@ type DescribeChatResponse struct {
 }
 
 func (r *DescribeChatResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
 // because it has no param check, nor strict type check
 func (r *DescribeChatResponse) FromJsonString(s string) error {
+	return json.Unmarshal([]byte(s), &r)
+}
+
+type DescribeCourseInfoRequest struct {
+	*tchttp.BaseRequest
+
+	// 课程ID列表，单次上限：10
+	CourseIds []*int64 `json:"CourseIds,omitempty" name:"CourseIds"`
+}
+
+func (r *DescribeCourseInfoRequest) ToJsonString() string {
+    b, _ := json.Marshal(r)
+    return string(b)
+}
+
+// FromJsonString It is highly **NOT** recommended to use this function
+// because it has no param check, nor strict type check
+func (r *DescribeCourseInfoRequest) FromJsonString(s string) error {
+	f := make(map[string]interface{})
+	if err := json.Unmarshal([]byte(s), &f); err != nil {
+		return err
+	}
+	delete(f, "CourseIds")
+	if len(f) > 0 {
+		return tcerr.NewTencentCloudSDKError("ClientError.BuildRequestError", "DescribeCourseInfoRequest has unknown keys!", "")
+	}
+	return json.Unmarshal([]byte(s), &r)
+}
+
+type DescribeCourseInfoResponse struct {
+	*tchttp.BaseResponse
+	Response *struct {
+
+		// 课程列表
+		CourseList []*CourseDetail `json:"CourseList,omitempty" name:"CourseList"`
+
+		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+		RequestId *string `json:"RequestId,omitempty" name:"RequestId"`
+	} `json:"Response"`
+}
+
+func (r *DescribeCourseInfoResponse) ToJsonString() string {
+    b, _ := json.Marshal(r)
+    return string(b)
+}
+
+// FromJsonString It is highly **NOT** recommended to use this function
+// because it has no param check, nor strict type check
+func (r *DescribeCourseInfoResponse) FromJsonString(s string) error {
+	return json.Unmarshal([]byte(s), &r)
+}
+
+type DescribeCourseListRequest struct {
+	*tchttp.BaseRequest
+
+	// 课程类型：1-课程ID 2-课程包ID（可选）
+	CourseType *int64 `json:"CourseType,omitempty" name:"CourseType"`
+
+	// 分页序号，第一页序号为1
+	Page *int64 `json:"Page,omitempty" name:"Page"`
+
+	// 分页大小，最大分页 50
+	PageSize *int64 `json:"PageSize,omitempty" name:"PageSize"`
+}
+
+func (r *DescribeCourseListRequest) ToJsonString() string {
+    b, _ := json.Marshal(r)
+    return string(b)
+}
+
+// FromJsonString It is highly **NOT** recommended to use this function
+// because it has no param check, nor strict type check
+func (r *DescribeCourseListRequest) FromJsonString(s string) error {
+	f := make(map[string]interface{})
+	if err := json.Unmarshal([]byte(s), &f); err != nil {
+		return err
+	}
+	delete(f, "CourseType")
+	delete(f, "Page")
+	delete(f, "PageSize")
+	if len(f) > 0 {
+		return tcerr.NewTencentCloudSDKError("ClientError.BuildRequestError", "DescribeCourseListRequest has unknown keys!", "")
+	}
+	return json.Unmarshal([]byte(s), &r)
+}
+
+type DescribeCourseListResponse struct {
+	*tchttp.BaseResponse
+	Response *struct {
+
+		// 课程列表
+		CourseList []*BasicCourse `json:"CourseList,omitempty" name:"CourseList"`
+
+		// 总数
+		Total *int64 `json:"Total,omitempty" name:"Total"`
+
+		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+		RequestId *string `json:"RequestId,omitempty" name:"RequestId"`
+	} `json:"Response"`
+}
+
+func (r *DescribeCourseListResponse) ToJsonString() string {
+    b, _ := json.Marshal(r)
+    return string(b)
+}
+
+// FromJsonString It is highly **NOT** recommended to use this function
+// because it has no param check, nor strict type check
+func (r *DescribeCourseListResponse) FromJsonString(s string) error {
+	return json.Unmarshal([]byte(s), &r)
+}
+
+type DescribeCoursePkgRequest struct {
+	*tchttp.BaseRequest
+
+	// 系列课ID列表，单次上限：10
+	PkgIds []*int64 `json:"PkgIds,omitempty" name:"PkgIds"`
+}
+
+func (r *DescribeCoursePkgRequest) ToJsonString() string {
+    b, _ := json.Marshal(r)
+    return string(b)
+}
+
+// FromJsonString It is highly **NOT** recommended to use this function
+// because it has no param check, nor strict type check
+func (r *DescribeCoursePkgRequest) FromJsonString(s string) error {
+	f := make(map[string]interface{})
+	if err := json.Unmarshal([]byte(s), &f); err != nil {
+		return err
+	}
+	delete(f, "PkgIds")
+	if len(f) > 0 {
+		return tcerr.NewTencentCloudSDKError("ClientError.BuildRequestError", "DescribeCoursePkgRequest has unknown keys!", "")
+	}
+	return json.Unmarshal([]byte(s), &r)
+}
+
+type DescribeCoursePkgResponse struct {
+	*tchttp.BaseResponse
+	Response *struct {
+
+		// 系列课列表
+		CoursePkgList []*CoursePkgInfo `json:"CoursePkgList,omitempty" name:"CoursePkgList"`
+
+		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+		RequestId *string `json:"RequestId,omitempty" name:"RequestId"`
+	} `json:"Response"`
+}
+
+func (r *DescribeCoursePkgResponse) ToJsonString() string {
+    b, _ := json.Marshal(r)
+    return string(b)
+}
+
+// FromJsonString It is highly **NOT** recommended to use this function
+// because it has no param check, nor strict type check
+func (r *DescribeCoursePkgResponse) FromJsonString(s string) error {
 	return json.Unmarshal([]byte(s), &r)
 }
 
@@ -2160,8 +2454,8 @@ type DescribeCourseTasksRequest struct {
 }
 
 func (r *DescribeCourseTasksRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2186,11 +2480,11 @@ type DescribeCourseTasksResponse struct {
 	Response *struct {
 
 		// 下一页序号，当为0时表示没有下一页了
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		PageNext *int64 `json:"PageNext,omitempty" name:"PageNext"`
 
 		// 直播任务列表
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		TaskList []*TaskItem `json:"TaskList,omitempty" name:"TaskList"`
 
 		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -2199,8 +2493,8 @@ type DescribeCourseTasksResponse struct {
 }
 
 func (r *DescribeCourseTasksResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2217,8 +2511,8 @@ type DescribeDeptRootRequest struct {
 }
 
 func (r *DescribeDeptRootRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2257,8 +2551,8 @@ type DescribeDeptRootResponse struct {
 }
 
 func (r *DescribeDeptRootResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2284,8 +2578,8 @@ type DescribeDeptSubRequest struct {
 }
 
 func (r *DescribeDeptSubRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2318,8 +2612,8 @@ type DescribeDeptSubResponse struct {
 }
 
 func (r *DescribeDeptSubResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2345,8 +2639,8 @@ type DescribeDeptUserRequest struct {
 }
 
 func (r *DescribeDeptUserRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2379,8 +2673,8 @@ type DescribeDeptUserResponse struct {
 }
 
 func (r *DescribeDeptUserResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2409,8 +2703,8 @@ type DescribeExamAnswerRequest struct {
 }
 
 func (r *DescribeExamAnswerRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2453,8 +2747,8 @@ type DescribeExamAnswerResponse struct {
 }
 
 func (r *DescribeExamAnswerResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2480,8 +2774,8 @@ type DescribeExamQuestionRequest struct {
 }
 
 func (r *DescribeExamQuestionRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2520,8 +2814,8 @@ type DescribeExamQuestionResponse struct {
 }
 
 func (r *DescribeExamQuestionResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2547,8 +2841,8 @@ type DescribeFastCourseTasksRequest struct {
 }
 
 func (r *DescribeFastCourseTasksRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2584,8 +2878,8 @@ type DescribeFastCourseTasksResponse struct {
 }
 
 func (r *DescribeFastCourseTasksResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2605,8 +2899,8 @@ type DescribeFastLiveCourseRequest struct {
 }
 
 func (r *DescribeFastLiveCourseRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2635,15 +2929,15 @@ type DescribeFastLiveCourseResponse struct {
 		TermId *string `json:"TermId,omitempty" name:"TermId"`
 
 		// 课程学习可见范围属性， 0-公开 1-指定范围
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		VisibleScope *uint64 `json:"VisibleScope,omitempty" name:"VisibleScope"`
 
 		// 课程名
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		Name *string `json:"Name,omitempty" name:"Name"`
 
 		// 直播链接
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		LiveUrl *string `json:"LiveUrl,omitempty" name:"LiveUrl"`
 
 		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -2652,8 +2946,8 @@ type DescribeFastLiveCourseResponse struct {
 }
 
 func (r *DescribeFastLiveCourseResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2679,8 +2973,8 @@ type DescribeFastLiveCoursesRequest struct {
 }
 
 func (r *DescribeFastLiveCoursesRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2716,8 +3010,8 @@ type DescribeFastLiveCoursesResponse struct {
 }
 
 func (r *DescribeFastLiveCoursesResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2737,8 +3031,8 @@ type DescribeFastReplayDownloadsRequest struct {
 }
 
 func (r *DescribeFastReplayDownloadsRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2769,8 +3063,8 @@ type DescribeFastReplayDownloadsResponse struct {
 }
 
 func (r *DescribeFastReplayDownloadsResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2796,8 +3090,8 @@ type DescribeFastReplaysRequest struct {
 }
 
 func (r *DescribeFastReplaysRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2833,8 +3127,8 @@ type DescribeFastReplaysResponse struct {
 }
 
 func (r *DescribeFastReplaysResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2854,8 +3148,8 @@ type DescribeLiveCourseRequest struct {
 }
 
 func (r *DescribeLiveCourseRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2884,15 +3178,15 @@ type DescribeLiveCourseResponse struct {
 		TermId *uint64 `json:"TermId,omitempty" name:"TermId"`
 
 		// 课程学习可见范围属性， 0-公开 1-指定范围
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		VisibleScope *uint64 `json:"VisibleScope,omitempty" name:"VisibleScope"`
 
 		// 课程名
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		Name *string `json:"Name,omitempty" name:"Name"`
 
 		// 直播链接
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		LiveUrl *string `json:"LiveUrl,omitempty" name:"LiveUrl"`
 
 		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -2901,8 +3195,8 @@ type DescribeLiveCourseResponse struct {
 }
 
 func (r *DescribeLiveCourseResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2928,8 +3222,8 @@ type DescribeLiveCoursesRequest struct {
 }
 
 func (r *DescribeLiveCoursesRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -2965,13 +3259,76 @@ type DescribeLiveCoursesResponse struct {
 }
 
 func (r *DescribeLiveCoursesResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
 // because it has no param check, nor strict type check
 func (r *DescribeLiveCoursesResponse) FromJsonString(s string) error {
+	return json.Unmarshal([]byte(s), &r)
+}
+
+type DescribePlanProcessRequest struct {
+	*tchttp.BaseRequest
+
+	// 第三方平台用户ID
+	ThirdUid *string `json:"ThirdUid,omitempty" name:"ThirdUid"`
+
+	// 课程ID
+	CourseId *int64 `json:"CourseId,omitempty" name:"CourseId"`
+
+	// 班级ID（可选）
+	TermId *int64 `json:"TermId,omitempty" name:"TermId"`
+}
+
+func (r *DescribePlanProcessRequest) ToJsonString() string {
+    b, _ := json.Marshal(r)
+    return string(b)
+}
+
+// FromJsonString It is highly **NOT** recommended to use this function
+// because it has no param check, nor strict type check
+func (r *DescribePlanProcessRequest) FromJsonString(s string) error {
+	f := make(map[string]interface{})
+	if err := json.Unmarshal([]byte(s), &f); err != nil {
+		return err
+	}
+	delete(f, "ThirdUid")
+	delete(f, "CourseId")
+	delete(f, "TermId")
+	if len(f) > 0 {
+		return tcerr.NewTencentCloudSDKError("ClientError.BuildRequestError", "DescribePlanProcessRequest has unknown keys!", "")
+	}
+	return json.Unmarshal([]byte(s), &r)
+}
+
+type DescribePlanProcessResponse struct {
+	*tchttp.BaseResponse
+	Response *struct {
+
+		// 课程ID
+		CourseId *int64 `json:"CourseId,omitempty" name:"CourseId"`
+
+		// 课程名称
+		Name *string `json:"Name,omitempty" name:"Name"`
+
+		// 班级列表
+		TermList []*TermProcess `json:"TermList,omitempty" name:"TermList"`
+
+		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
+		RequestId *string `json:"RequestId,omitempty" name:"RequestId"`
+	} `json:"Response"`
+}
+
+func (r *DescribePlanProcessResponse) ToJsonString() string {
+    b, _ := json.Marshal(r)
+    return string(b)
+}
+
+// FromJsonString It is highly **NOT** recommended to use this function
+// because it has no param check, nor strict type check
+func (r *DescribePlanProcessResponse) FromJsonString(s string) error {
 	return json.Unmarshal([]byte(s), &r)
 }
 
@@ -2986,8 +3343,8 @@ type DescribeReplayDownloadsRequest struct {
 }
 
 func (r *DescribeReplayDownloadsRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3018,8 +3375,8 @@ type DescribeReplayDownloadsResponse struct {
 }
 
 func (r *DescribeReplayDownloadsResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3045,8 +3402,8 @@ type DescribeReplaysRequest struct {
 }
 
 func (r *DescribeReplaysRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3082,8 +3439,8 @@ type DescribeReplaysResponse struct {
 }
 
 func (r *DescribeReplaysResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3112,8 +3469,8 @@ type DescribeStudyDataRequest struct {
 }
 
 func (r *DescribeStudyDataRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3159,8 +3516,8 @@ type DescribeStudyDataResponse struct {
 }
 
 func (r *DescribeStudyDataResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3186,8 +3543,8 @@ type DescribeUserFavsRequest struct {
 }
 
 func (r *DescribeUserFavsRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3212,15 +3569,15 @@ type DescribeUserFavsResponse struct {
 	Response *struct {
 
 		// 总页数
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		TotalPage *uint64 `json:"TotalPage,omitempty" name:"TotalPage"`
 
 		// 机构课程信息
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		AgencyCourseInfos []*AgencyCourseInfo `json:"AgencyCourseInfos,omitempty" name:"AgencyCourseInfos"`
 
-		// 总数
-		// 注意：此字段可能返回 null，表示取不到有效值。
+		// 总数,包含收藏机构的，如果用户收藏机构，数据会大于收藏课程，需要修复
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		TotalCount *uint64 `json:"TotalCount,omitempty" name:"TotalCount"`
 
 		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -3229,8 +3586,8 @@ type DescribeUserFavsResponse struct {
 }
 
 func (r *DescribeUserFavsResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3286,8 +3643,8 @@ type ModifyFastLiveCourseRequest struct {
 }
 
 func (r *ModifyFastLiveCourseRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3317,8 +3674,8 @@ type ModifyFastLiveCourseResponse struct {
 }
 
 func (r *ModifyFastLiveCourseResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3341,8 +3698,8 @@ type ModifyFastTeacherRequest struct {
 }
 
 func (r *ModifyFastTeacherRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3371,8 +3728,8 @@ type ModifyFastTeacherResponse struct {
 }
 
 func (r *ModifyFastTeacherResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3398,8 +3755,8 @@ type ModifyLiveCourseAuthorizeRequest struct {
 }
 
 func (r *ModifyLiveCourseAuthorizeRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3429,8 +3786,8 @@ type ModifyLiveCourseAuthorizeResponse struct {
 }
 
 func (r *ModifyLiveCourseAuthorizeResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3456,8 +3813,8 @@ type ModifyLiveCourseRequest struct {
 }
 
 func (r *ModifyLiveCourseRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3487,8 +3844,8 @@ type ModifyLiveCourseResponse struct {
 }
 
 func (r *ModifyLiveCourseResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3511,8 +3868,8 @@ type ModifyTeacherRequest struct {
 }
 
 func (r *ModifyTeacherRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3541,8 +3898,8 @@ type ModifyTeacherResponse struct {
 }
 
 func (r *ModifyTeacherResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3571,8 +3928,8 @@ type ModifyUserFavBatchRequest struct {
 }
 
 func (r *ModifyUserFavBatchRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3609,8 +3966,8 @@ type ModifyUserFavBatchResponse struct {
 }
 
 func (r *ModifyUserFavBatchResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3639,8 +3996,8 @@ type ModifyUserFavRequest struct {
 }
 
 func (r *ModifyUserFavRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3671,8 +4028,8 @@ type ModifyUserFavResponse struct {
 }
 
 func (r *ModifyUserFavResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3712,6 +4069,15 @@ type PackageTerm struct {
 	// 班级url地址
 	// 注意：此字段可能返回 null，表示取不到有效值。
 	TermUrl *string `json:"TermUrl,omitempty" name:"TermUrl"`
+}
+
+type PkgCourse struct {
+
+	// 课程ID
+	CourseId *int64 `json:"CourseId,omitempty" name:"CourseId"`
+
+	// 班级ID
+	TermId *int64 `json:"TermId,omitempty" name:"TermId"`
 }
 
 type ProductID struct {
@@ -3865,8 +4231,8 @@ type SearchDeptRequest struct {
 }
 
 func (r *SearchDeptRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3902,8 +4268,8 @@ type SearchDeptResponse struct {
 }
 
 func (r *SearchDeptResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3929,8 +4295,8 @@ type SearchDeptUserRequest struct {
 }
 
 func (r *SearchDeptUserRequest) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -3955,11 +4321,11 @@ type SearchDeptUserResponse struct {
 	Response *struct {
 
 		// 本次结果总数
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		Total *uint64 `json:"Total,omitempty" name:"Total"`
 
 		// 部门用户列表
-		// 注意：此字段可能返回 null，表示取不到有效值。
+	// 注意：此字段可能返回 null，表示取不到有效值。
 		UserList []*DeptUserInfo `json:"UserList,omitempty" name:"UserList"`
 
 		// 唯一请求 ID，每次请求都会返回。定位问题时需要提供该次请求的 RequestId。
@@ -3968,8 +4334,8 @@ type SearchDeptUserResponse struct {
 }
 
 func (r *SearchDeptUserResponse) ToJsonString() string {
-	b, _ := json.Marshal(r)
-	return string(b)
+    b, _ := json.Marshal(r)
+    return string(b)
 }
 
 // FromJsonString It is highly **NOT** recommended to use this function
@@ -4044,6 +4410,30 @@ type StudyInfo struct {
 	SubCourseList []*SCRMSubCourseInfo `json:"SubCourseList,omitempty" name:"SubCourseList"`
 }
 
+type SubCourse struct {
+
+	// 节ID
+	Id *int64 `json:"Id,omitempty" name:"Id"`
+
+	// 节名称
+	Name *string `json:"Name,omitempty" name:"Name"`
+
+	// 任务列表
+	TaskList []*CourseTask `json:"TaskList,omitempty" name:"TaskList"`
+}
+
+type SubCourseProcess struct {
+
+	// 节ID
+	Id *int64 `json:"Id,omitempty" name:"Id"`
+
+	// 节名称
+	Name *string `json:"Name,omitempty" name:"Name"`
+
+	// 任务列表
+	TaskList []*TaskProcess `json:"TaskList,omitempty" name:"TaskList"`
+}
+
 type Task struct {
 
 	// 任务授课时长
@@ -4061,6 +4451,12 @@ type Task struct {
 
 	// 任务结束时间
 	EndTime *string `json:"EndTime,omitempty" name:"EndTime"`
+}
+
+type TaskExt struct {
+
+	// 视频信息
+	Video *VideoExt `json:"Video,omitempty" name:"Video"`
 }
 
 type TaskInfo struct {
@@ -4114,6 +4510,39 @@ type TaskItem struct {
 
 	// 任务结束时间
 	EndTime *uint64 `json:"EndTime,omitempty" name:"EndTime"`
+}
+
+type TaskProcess struct {
+
+	// 任务ID
+	Id *int64 `json:"Id,omitempty" name:"Id"`
+
+	// 任务名称
+	Name *string `json:"Name,omitempty" name:"Name"`
+
+	// 任务类型：1-直播 2-录播 3-资料 4-习题/考试
+	Type *int64 `json:"Type,omitempty" name:"Type"`
+
+	// 任务扩展信息
+	Ext *TaskProcessExt `json:"Ext,omitempty" name:"Ext"`
+}
+
+type TaskProcessExt struct {
+
+	// 视频播放信息
+	Video *VideoProcess `json:"Video,omitempty" name:"Video"`
+}
+
+type TermProcess struct {
+
+	// 班级ID
+	TermId *int64 `json:"TermId,omitempty" name:"TermId"`
+
+	// 班级名称
+	Name *string `json:"Name,omitempty" name:"Name"`
+
+	// 节列表
+	SubCourseList []*SubCourseProcess `json:"SubCourseList,omitempty" name:"SubCourseList"`
 }
 
 type UserApply struct {
@@ -4183,4 +4612,31 @@ type UserOrder struct {
 
 	// 支付时间 , unix时间戳，单位为秒
 	PayTime *int64 `json:"PayTime,omitempty" name:"PayTime"`
+}
+
+type VideoExt struct {
+
+	// 视频时长
+	ResIdTimes *string `json:"ResIdTimes,omitempty" name:"ResIdTimes"`
+
+	// 视频ID
+	ResId *string `json:"ResId,omitempty" name:"ResId"`
+}
+
+type VideoProcess struct {
+
+	// 视频ID
+	ResId *string `json:"ResId,omitempty" name:"ResId"`
+
+	// 视频时长, 单位：秒
+	ResIdTimes *int64 `json:"ResIdTimes,omitempty" name:"ResIdTimes"`
+
+	// 观看时长, 单位：秒
+	PlayTs *int64 `json:"PlayTs,omitempty" name:"PlayTs"`
+
+	// 最后观看的位置
+	LatestPos *int64 `json:"LatestPos,omitempty" name:"LatestPos"`
+
+	// 最后观看时间
+	UpdateTs *int64 `json:"UpdateTs,omitempty" name:"UpdateTs"`
 }
